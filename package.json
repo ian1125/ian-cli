@@ -1,7 +1,7 @@
 {
   "name": "ian-cli",
-  "version": "1.0.0",
-  "description": "ian study",
+  "version": "1.0.3",
+  "description": "",
   "main": "index.js",
   "bin": {
     "zr": "./bin/cli.js"
@@ -9,12 +9,28 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "ianyang",
-  "license": "ISC",
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "author": {
+    "name": "ianyang",
+    "email": "ianyang811916@163.com"
+  },
+  "keywords": [
+    "ian-cli",
+    "ian",
+    "脚手架"
+  ],
+  "license": "MIT",
   "dependencies": {
-    "commander": "^8.0.0",
-    "ejs": "^3.1.6",
+    "axios": "^0.21.1",
+    "chalk": "^4.1.1",
+    "commander": "^7.2.0",
+    "download-git-repo": "^3.0.2",
+    "figlet": "^1.5.0",
     "fs-extra": "^10.0.0",
-    "inquirer": "^8.1.2"
+    "inquirer": "^8.0.0",
+    "ora": "^5.4.0"
   }
 }

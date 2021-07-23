@@ -1,53 +1,55 @@
 #! /usr/bin/env node
 
-const inquirer = require('inquirer')
-const path = require('path')
-const fs = require('fs')
-const ejs = require('ejs')
-const program = require('commander')
+const program = require('commander');
+const figlet = require('figlet');
+const chalk = require('chalk');
 
-inquirer.prompt([
-  {
-    type: 'input', //type：input,confirm,list,rawlist,checkbox,password...
-    name: 'name', // key 名
-    message: 'Your name', // 提示信息
-    default: 'my-project' // 默认值
-  }
-]).then(answers => {
-  // 模版文件目录
-  const destUrl = path.join(__dirname, '../templates'); 
-  // 生成文件目录
-  // process.cwd() 对应控制台所在目录
-  const cwdUrl = process.cwd();
-  // 从模版目录中读取文件
-  fs.readdir(destUrl, (err, files) => {
-    if (err) throw err;
-    files.forEach((file) => {
-      // 使用 ejs 渲染对应的模版文件
-      // renderFile（模版文件地址，传入渲染数据）
-      ejs.renderFile(path.join(destUrl, file), answers).then(data => {
-        // 生成 ejs 处理后的模版文件
-        fs.writeFileSync(path.join(cwdUrl, file) , data)
-      })
-    })
-  })
-})
 
 program
-  // 定义命令和参数
   .command('create <app-name>')
   .description('create a new project')
-  // -f or --force 为强制创建，如果创建的目录存在则直接覆盖
-  .option('-f, --force', 'overwrite target directory if it exist')
+  .option('-f, --force', 'overwrite target directory if it exist') // 是否强制创建，当文件夹已经存在
   .action((name, options) => {
-    // 打印执行结果
+    // 在 create.js 中执行创建任务
     require('../lib/create.js')(name, options)
   })
-  
+
+  // 配置 config 命令
 program
-   // 配置版本号信息
+  .command('config [value]')
+  .description('inspect and modify the config')
+  .option('-g, --get <path>', 'get value from option')
+  .option('-s, --set <path> <value>')
+  .option('-d, --delete <path>', 'delete option from config')
+  .action((value, options) => {
+    console.log(value, options)
+  })
+
+// 配置 ui 命令
+program
+  .command('ui')
+  .description('start add open roc-cli ui')
+  .option('-p, --port <port>', 'Port used for the UI Server')
+  .action((option) => {
+    console.log(option)
+  })
+
+program
+  // 配置版本号信息
   .version(`v${require('../package.json').version}`)
   .usage('<command> [option]')
-  
+
+program
+  .on('--help', () => {
+    console.log('\r\n' + figlet.textSync('zhurong', {
+      font: 'Ghost',
+      horizontalLayout: 'default',
+      verticalLayout: 'default',
+      width: 80,
+      whitespaceBreak: true
+    }));
+    console.log(`\r\nRun ${chalk.cyan(`zr <command> --help`)} for detailed usage of given command\r\n`)
+  })
+
 // 解析用户执行命令传入参数
 program.parse(process.argv);
